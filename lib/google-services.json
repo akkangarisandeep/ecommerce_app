@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "330292154230",
+    "project_id": "gattedcommunityapp",
+    "storage_bucket": "gattedcommunityapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330292154230:android:8429cd3088350963efb457",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtShpTaGM7Qj4wCbRHoKKA8S7pRYV51Ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330292154230:android:c99d4720e333ce4befb457",
+        "android_client_info": {
+          "package_name": "com.example.my_first_flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtShpTaGM7Qj4wCbRHoKKA8S7pRYV51Ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
