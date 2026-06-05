@@ -7,12 +7,13 @@ import 'cart_screen.dart';
 
 class ProductsScreen extends StatefulWidget {
   final List cartItems;
-
+  final List wishlistItems;
   const ProductsScreen({
 
     super.key,
 
     required this.cartItems,
+    required this.wishlistItems,
   });
   @override
   State<ProductsScreen> createState() =>
@@ -47,7 +48,6 @@ class _ProductsScreenState
       widget.cartItems.add({
 
         'name': product['name'],
-
         'price': product['price'],
       });
     });
@@ -57,8 +57,7 @@ class _ProductsScreenState
 
       SnackBar(
 
-        backgroundColor:
-        Colors.green,
+        backgroundColor: Colors.green,
 
         content: Text(
           "${product['name']} Added To Cart 🛒",
@@ -66,6 +65,49 @@ class _ProductsScreenState
       ),
     );
   }
+
+  void addToWishlist(product) {
+    print(product);
+    bool alreadyExists =
+
+    widget.wishlistItems.any(
+
+          (item) =>
+      item['name'] ==
+          product['name'],
+
+
+    );
+    if (!alreadyExists) {
+
+      setState(() {
+
+        widget.wishlistItems.add({
+
+          'name': product['name'],
+          'price': product['price'],
+        });
+      });
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+
+        SnackBar(
+
+          backgroundColor: Colors.red,
+
+          content: Text(
+            "${product['name']} added to Wishlist ❤️",
+          ),
+        ),
+      );
+    }
+  }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -483,32 +525,54 @@ class _ProductsScreenState
 
                               Expanded(
 
-                                child: Center(
+                                child: Stack(
 
-                                  child:
-                                  Image.asset(
+                                  children: [
 
-                                    imagePath,
+                                    Center(
 
-                                    fit: BoxFit.contain,
+                                      child: Image.asset(
 
-                                    errorBuilder:
-                                        (
-                                        context,
-                                        error,
-                                        stackTrace) {
+                                        imagePath,
 
-                                      return Icon(
+                                        fit: BoxFit.contain,
 
-                                        Icons.image,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
 
-                                        size: 70,
+                                          return Icon(
 
-                                        color:
-                                        Colors.grey,
-                                      );
-                                    },
-                                  ),
+                                            Icons.image,
+
+                                            size: 70,
+
+                                            color: Colors.grey,
+                                          );
+                                        },
+                                      ),
+                                    ),
+
+                                    Positioned(
+
+                                      top: 0,
+                                      right: 0,
+
+                                      child: IconButton(
+
+                                        icon: Icon(
+
+                                          Icons.favorite_border,
+
+                                          color: Colors.red,
+                                        ),
+
+                                        onPressed: () {
+
+                                          addToWishlist(product);
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
 

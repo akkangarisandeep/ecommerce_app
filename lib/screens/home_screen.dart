@@ -3,32 +3,16 @@ import 'package:flutter/material.dart';
 import 'products_screen.dart';
 import 'admin_orders_screen.dart';
 import 'my_orders_screen.dart';
-
+import 'wishlist_screen.dart';
 class HomeScreen extends StatelessWidget {
   final List cartItems;
+  final List wishlistItems;
 
-  const HomeScreen(
-
-  {
-
-  super
-
-      .
-
-  key
-
-  ,
-
-  required
-
-  this
-
-      .
-
-  cartItems
-
-  ,
-});
+  const HomeScreen({
+    super.key,
+    required this.cartItems,
+    required this.wishlistItems,
+  });
   @override
 
   Widget build(BuildContext context) {
@@ -228,6 +212,7 @@ class HomeScreen extends StatelessWidget {
                             builder: (_) =>
                                 ProductsScreen(
                                   cartItems: cartItems,
+                                  wishlistItems: wishlistItems,
                                 ),
                           ),
                         );
@@ -331,6 +316,7 @@ class HomeScreen extends StatelessWidget {
                             builder: (_) =>
                                 ProductsScreen(
                                   cartItems: cartItems,
+                                  wishlistItems: wishlistItems,
                                 )                          ),
                         );
                       },
@@ -432,6 +418,7 @@ class HomeScreen extends StatelessWidget {
                             builder: (_) =>
                                 ProductsScreen(
                                   cartItems: cartItems,
+                                  wishlistItems: wishlistItems,
                                 )
                           ),
                         );
@@ -533,6 +520,7 @@ class HomeScreen extends StatelessWidget {
                             builder: (_) =>
                                 ProductsScreen(
                                   cartItems: cartItems,
+                                  wishlistItems: wishlistItems,
                                 )
                           ),
                         );

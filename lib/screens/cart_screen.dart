@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'orders_screen.dart';
-
+import '../services/payment_service.dart';
 class CartScreen extends StatelessWidget {
 
   final List cartItems;
-
+  final PaymentService paymentService =
+  PaymentService();
   CartScreen({
     required this.cartItems,
   });
@@ -116,25 +117,18 @@ class CartScreen extends StatelessWidget {
 
                     onPressed: () {
 
-                      Navigator.push(
+                      paymentService.initPayment(
 
-                        context,
+                        context: context,
 
-                        MaterialPageRoute(
-
-                          builder: (_) =>
-                              OrderScreen(
-                                cartItems:
-                                cartItems,
-                              ),
-                        ),
+                        amount: total,
                       );
                     },
 
-                    child: Text(
-                      "Checkout",
+                    child: const Text(
+                      "Pay Now",
                     ),
-                  ),
+                  )
                 )
               ],
             ),
