@@ -3,9 +3,8 @@
   import 'home_screen.dart';
   import 'cart_screen.dart';
   import 'wishlist_screen.dart';
-  import 'my_orders_screen.dart';
   import 'profile_screen.dart';
-
+  import  'mysql_orders_screen.dart';
   class BottomNavScreen extends StatefulWidget {
     const BottomNavScreen({super.key});
 
@@ -41,10 +40,12 @@
           wishlistItems: wishlistItems,
         ),
 
-        MyOrdersScreen(),
+        const MysqlOrdersScreen(),
 
         const ProfileScreen(),
       ];
+
+
 
       return Scaffold(
 

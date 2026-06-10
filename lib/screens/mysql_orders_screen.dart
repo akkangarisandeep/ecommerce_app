@@ -14,6 +14,10 @@ class _MysqlOrdersScreenState
 
   final ApiService apiService = ApiService();
 
+  Future refresh() async {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -29,21 +33,19 @@ class _MysqlOrdersScreenState
 
         builder: (context, snapshot) {
 
-          if (snapshot.connectionState ==
-              ConnectionState.waiting) {
+          if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          if (!snapshot.hasData ||
-              snapshot.data!.isEmpty) {
+          List orders = snapshot.data!;
+
+          if (orders.isEmpty) {
             return const Center(
               child: Text("No Orders Found"),
             );
           }
-
-          List orders = snapshot.data!;
 
           return ListView.builder(
 
@@ -65,11 +67,38 @@ class _MysqlOrdersScreenState
                   ),
 
                   title: Text(
-                    order['product_name'].toString(),
+                    order['product_name'],
                   ),
 
                   subtitle: Text(
                     "₹${order['price']}",
+                  ),
+
+                  trailing: IconButton(
+
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+
+                    onPressed: () async {
+
+                      await apiService.deleteOrder(
+                        order['id'],
+                      );
+
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(
+
+                        const SnackBar(
+                          content: Text(
+                            "Order Deleted",
+                          ),
+                        ),
+                      );
+
+                      refresh();
+                    },
                   ),
                 ),
               );

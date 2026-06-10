@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 
-import 'orders_screen.dart';
-import '../services/payment_service.dart';
 class CartScreen extends StatelessWidget {
 
   final List cartItems;
-  final PaymentService paymentService =
-  PaymentService();
-  CartScreen({
+
+  const CartScreen({
+    super.key,
     required this.cartItems,
   });
 
   @override
   Widget build(BuildContext context) {
 
+    final ApiService apiService = ApiService();
+
     double total = 0;
 
     for (var item in cartItems) {
-
       total += double.parse(
         item['price'].toString(),
       );
@@ -26,12 +26,12 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("My Cart"),
+        title: const Text("My Cart"),
       ),
 
       body: cartItems.isEmpty
 
-          ? Center(
+          ? const Center(
         child: Text(
           "Cart Empty",
         ),
@@ -43,36 +43,29 @@ class CartScreen extends StatelessWidget {
 
           Expanded(
 
-            child:
-            ListView.builder(
+            child: ListView.builder(
 
-              itemCount:
-              cartItems.length,
+              itemCount: cartItems.length,
 
-              itemBuilder:
-                  (context, index) {
+              itemBuilder: (context, index) {
 
-                final item =
-                cartItems[index];
+                final item = cartItems[index];
 
                 return Card(
 
-                  margin:
-                  const EdgeInsets.all(
-                      10),
+                  margin: const EdgeInsets.all(10),
 
                   child: ListTile(
 
-                    leading:
-                    CircleAvatar(
-
+                    leading: const CircleAvatar(
                       child: Icon(
                         Icons.shopping_cart,
                       ),
                     ),
 
                     title: Text(
-                        item['name']),
+                      item['name'],
+                    ),
 
                     subtitle: Text(
                       "₹${item['price']}",
@@ -85,8 +78,7 @@ class CartScreen extends StatelessWidget {
 
           Padding(
 
-            padding:
-            const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
 
             child: Column(
 
@@ -96,43 +88,57 @@ class CartScreen extends StatelessWidget {
 
                   "Total: ₹$total",
 
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 22,
-                    fontWeight:
-                    FontWeight.bold,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 SizedBox(
 
-                  width:
-                  double.infinity,
+                  width: double.infinity,
 
                   height: 50,
 
-                  child:
-                  ElevatedButton(
+                  child: ElevatedButton(
 
-                    onPressed: () {
+                    onPressed: () async {
 
-                      paymentService.initPayment(
+                      for (var item in cartItems) {
 
-                        context: context,
+                        await apiService.saveOrder(
 
-                        amount: total,
+                          item['name'],
+
+                          item['price'].toString(),
+                        );
+                      }
+
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(
+
+                        const SnackBar(
+
+                          backgroundColor:
+                          Colors.green,
+
+                          content: Text(
+                            "Order Saved Successfully 🎉",
+                          ),
+                        ),
                       );
                     },
 
                     child: const Text(
-                      "Pay Now",
+                      "Checkout",
                     ),
-                  )
-                )
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../services/api_service.dart';
 
 class AddressScreen extends StatefulWidget {
   const AddressScreen({super.key});
@@ -16,52 +15,14 @@ class _AddressScreenState
   final nameController =
   TextEditingController();
 
-  final phoneController =
+  final mobileController =
   TextEditingController();
 
   final addressController =
   TextEditingController();
 
-  final cityController =
-  TextEditingController();
-
-  final pincodeController =
-  TextEditingController();
-
-  Future saveAddress() async {
-
-    final user =
-        FirebaseAuth.instance.currentUser;
-
-    if (user == null) return;
-
-    await FirebaseFirestore.instance
-        .collection("addresses")
-        .doc(user.uid)
-        .set({
-
-      "name": nameController.text,
-
-      "phone": phoneController.text,
-
-      "address":
-      addressController.text,
-
-      "city": cityController.text,
-
-      "pincode":
-      pincodeController.text,
-    });
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
-
-      const SnackBar(
-        content:
-        Text("Address Saved"),
-      ),
-    );
-  }
+  final ApiService apiService =
+  ApiService();
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +30,10 @@ class _AddressScreenState
     return Scaffold(
 
       appBar: AppBar(
-        title:
-        const Text("My Address"),
+        title: const Text("Delivery Address"),
       ),
 
-      body: SingleChildScrollView(
+      body: Padding(
 
         padding:
         const EdgeInsets.all(16),
@@ -83,56 +43,47 @@ class _AddressScreenState
           children: [
 
             TextField(
+
               controller:
               nameController,
+
               decoration:
               const InputDecoration(
-                labelText: "Name",
+
+                labelText:
+                "Full Name",
               ),
             ),
 
             const SizedBox(height: 15),
 
             TextField(
+
               controller:
-              phoneController,
+              mobileController,
+
               decoration:
               const InputDecoration(
-                labelText: "Phone",
+
+                labelText:
+                "Mobile Number",
               ),
             ),
 
             const SizedBox(height: 15),
 
             TextField(
+
               controller:
               addressController,
-              decoration:
-              const InputDecoration(
-                labelText: "Address",
-              ),
+
               maxLines: 3,
-            ),
 
-            const SizedBox(height: 15),
-
-            TextField(
-              controller:
-              cityController,
               decoration:
               const InputDecoration(
-                labelText: "City",
-              ),
-            ),
 
-            const SizedBox(height: 15),
-
-            TextField(
-              controller:
-              pincodeController,
-              decoration:
-              const InputDecoration(
-                labelText: "Pincode",
+                labelText:
+                "Address",
               ),
             ),
 
@@ -140,19 +91,36 @@ class _AddressScreenState
 
             SizedBox(
 
-              width:
-              double.infinity,
+              width: double.infinity,
 
-              height: 55,
+              child: ElevatedButton(
 
-              child:
-              ElevatedButton(
+                onPressed: () async {
 
-                onPressed:
-                saveAddress,
+                  await apiService
+                      .saveAddress(
 
-                child:
-                const Text(
+                    nameController.text,
+
+                    mobileController.text,
+
+                    addressController.text,
+                  );
+
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(
+
+                    const SnackBar(
+
+                      content: Text(
+                        "Address Saved ✅",
+                      ),
+                    ),
+                  );
+                },
+
+                child: const Text(
                   "Save Address",
                 ),
               ),

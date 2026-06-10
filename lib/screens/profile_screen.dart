@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'login_screen.dart';
-import 'my_orders_screen.dart';
 import 'address_screen.dart';
+import 'admin_products_screen.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -11,297 +11,238 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
 
-      body: Container(
+    appBar: AppBar(
+    title: const Text("My Profile"),
+    centerTitle: true,
+    ),
 
-        decoration: const BoxDecoration(
+    body: SingleChildScrollView(
 
-          gradient: LinearGradient(
+    child: Padding(
 
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+    padding: const EdgeInsets.all(20),
 
-            colors: [
+    child: Column(
 
-              Color(0xFF6C63FF),
-              Color(0xFFF5F7FB),
-            ],
-          ),
-        ),
+    children: [
 
-        child: SafeArea(
+    const SizedBox(height: 20),
 
-          child: Column(
+    CircleAvatar(
 
-            children: [
+    radius: 50,
 
-              const SizedBox(height: 25),
+    backgroundColor:
+    const Color(0xFF6C63FF),
 
-              const CircleAvatar(
+    child: const Icon(
+    Icons.person,
+    size: 60,
+    color: Colors.white,
+    ),
+    ),
 
-                radius: 55,
+    const SizedBox(height: 15),
 
-                backgroundColor: Colors.white,
+    const Text(
 
-                child: Icon(
+    "Welcome",
 
-                  Icons.person,
+    style: TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    ),
+    ),
 
-                  size: 60,
+    const SizedBox(height: 8),
 
-                  color: Color(0xFF6C63FF),
-                ),
-              ),
+    Text(
 
-              const SizedBox(height: 15),
+    user?.phoneNumber ??
+    "No Phone Number",
 
-              const Text(
+    style: const TextStyle(
+    fontSize: 16,
+    color: Colors.grey,
+    ),
+    ),
 
-                "Community Store User",
+    const SizedBox(height: 30),
 
-                style: TextStyle(
+    Card(
 
-                  fontSize: 24,
+    shape: RoundedRectangleBorder(
+    borderRadius:
+    BorderRadius.circular(15),
+    ),
 
-                  fontWeight: FontWeight.bold,
+    child: Column(
 
-                  color: Colors.white,
-                ),
-              ),
+    children: [
 
-              const SizedBox(height: 5),
+    ListTile(
 
-              Text(
+    leading: const Icon(
+    Icons.location_on,
+    color: Colors.red,
+    ),
 
-                user?.phoneNumber ?? "No Phone Number",
+    title:
+    const Text("My Address"),
 
-                style: const TextStyle(
+    trailing: const Icon(
+    Icons.arrow_forward_ios,
+    size: 18,
+    ),
 
-                  fontSize: 16,
+    onTap: () {
 
-                  color: Colors.white70,
-                ),
-              ),
+    Navigator.push(
 
-              const SizedBox(height: 25),
+    context,
 
-              Expanded(
+    MaterialPageRoute(
 
-                child: Container(
-
-                  width: double.infinity,
-
-                  decoration: const BoxDecoration(
-
-                    color: Colors.white,
-
-                    borderRadius: BorderRadius.only(
-
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                  ),
-
-                  child: Padding(
-
-                    padding: const EdgeInsets.all(20),
-
-                    child: Column(
-
-                      children: [
-
-                        buildTile(
-
-                          context,
-
-                          Icons.receipt_long,
-
-                          "My Orders",
-
-                              () {
-
-                            Navigator.push(
-
-                              context,
-
-                              MaterialPageRoute(
-
-                                builder: (_) =>
-                                    MyOrdersScreen(),
-                              ),
-                            );
-                          },
-                        ),
-
-                        buildTile(
-
-                          context,
-
-                          Icons.location_on,
-
-                          "My Address",
-
-                              () {
-
-                            Navigator.push(
-
-                              context,
-
-                              MaterialPageRoute(
-
-                                builder: (_) =>
-                                const AddressScreen(),
-                              ),
-                            );
-                          },
-                        ),
-
-                        buildTile(
-
-                          context,
-
-                          Icons.settings,
-
-                          "Settings",
-
-                              () {
-
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-
-                              const SnackBar(
-
-                                content: Text(
-                                  "Settings Coming Soon",
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-
-                        buildTile(
-
-                          context,
-
-                          Icons.help,
-
-                          "Help & Support",
-
-                              () {
-
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-
-                              const SnackBar(
-
-                                content: Text(
-                                  "Support Coming Soon",
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-
-                        buildTile(
-
-                          context,
-
-                          Icons.logout,
-
-                          "Logout",
-
-                              () async {
-
-                            await FirebaseAuth.instance
-                                .signOut();
-
-                            Navigator.pushAndRemoveUntil(
-
-                              context,
-
-                              MaterialPageRoute(
-
-                                builder: (_) =>
-                                    LoginScreen(),
-                              ),
-
-                                  (route) => false,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    builder: (_) =>
+    const AddressScreen(),
+    ),
     );
-  }
+    },
+    ),
 
-  Widget buildTile(
+    const Divider(height: 1),
 
-      BuildContext context,
+    ListTile(
 
-      IconData icon,
+    leading: const Icon(
+    Icons.receipt_long,
+    color: Colors.green,
+    ),
 
-      String title,
+    title:
+    const Text("My Orders"),
 
-      VoidCallback onTap,
-      ) {
+    trailing: const Icon(
+    Icons.arrow_forward_ios,
+    size: 18,
+    ),
 
-    return Card(
+    onTap: () {},
+    ),
 
-      elevation: 4,
+    const Divider(height: 1),
 
-      margin: const EdgeInsets.only(
-        bottom: 15,
-      ),
+    ListTile(
 
-      shape: RoundedRectangleBorder(
+    leading: const Icon(
+    Icons.favorite,
+    color: Colors.pink,
+    ),
 
-        borderRadius:
-        BorderRadius.circular(20),
-      ),
+    title:
+    const Text("Wishlist"),
 
-      child: ListTile(
+    trailing: const Icon(
+    Icons.arrow_forward_ios,
+    size: 18,
+    ),
 
-        leading: CircleAvatar(
+    onTap: () {},
+    ),
 
-          backgroundColor:
-          const Color(0xFFEEEAFE),
+    const Divider(height: 1),
 
-          child: Icon(
+    ListTile(
 
-            icon,
+    leading: const Icon(
+    Icons.admin_panel_settings,
+    color: Colors.blue,
+    ),
 
-            color:
-            const Color(0xFF6C63FF),
-          ),
-        ),
+    title:
+    const Text("Admin Panel"),
 
-        title: Text(
+    trailing: const Icon(
+    Icons.arrow_forward_ios,
+    size: 18,
+    ),
 
-          title,
+    onTap: () {
 
-          style: const TextStyle(
+    Navigator.push(
 
-            fontWeight:
-            FontWeight.bold,
-          ),
-        ),
+    context,
 
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-        ),
+    MaterialPageRoute(
 
-        onTap: onTap,
-      ),
+    builder: (_) =>
+    const AdminProductsScreen(),
+    ),
     );
+    },
+    ),
+    ],
+    ),
+    ),
+
+    const SizedBox(height: 30),
+
+    SizedBox(
+
+    width: double.infinity,
+    height: 50,
+
+    child: ElevatedButton.icon(
+
+    style:
+    ElevatedButton.styleFrom(
+
+    backgroundColor:
+    Colors.red,
+
+    foregroundColor:
+    Colors.white,
+    ),
+
+    onPressed: () async {
+
+    await FirebaseAuth.instance
+        .signOut();
+
+    Navigator.pushAndRemoveUntil(
+
+    context,
+
+    MaterialPageRoute(
+
+    builder: (_) =>
+    const LoginScreen(),
+    ),
+
+    (route) => false,
+    );
+    },
+
+    icon: const Icon(
+    Icons.logout,
+    ),
+
+    label: const Text(
+    "Logout",
+    ),
+    ),
+    ),
+    ],
+    ),
+    ),
+    ),
+    );
+
+
   }
 }
